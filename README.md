@@ -22,7 +22,7 @@ pod "IPQueueDispatcher"
 
 ## Author
 
-Ilias Pavlidakis, ilias@flipsidegroup.com
+Ilias Pavlidakis, 3liaspav@gmail.com
 
 ## License
 
