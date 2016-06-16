@@ -72,7 +72,7 @@
         for (IPMessageHeaderEntity *header in [self headers]){
             [messageEntity addHeaderForKey:[header name]
                                      value:[header content]
-                           ommitEmptyValue:[header ommitEmptyValue]];
+                           ommitEmptyValue:[[header ommitEmptyValue] boolValue]];
         }
     }
     if ([self properties]){
@@ -80,19 +80,19 @@
             [messageEntity addPropertyForKey:[property name]
                                        value:[property content]
                                 includeInURL:NO
-                             ommitEmptyValue:[property ommitEmptyValue]];
+                             ommitEmptyValue:[[property ommitEmptyValue] boolValue]];
         }
     }
     if ([self delegateActions]){
         for (IPMessageCompletionDelegateAction *action in [self delegateActions]){
             [messageEntity addDelegateAction:[action selector]
-                          includeRawResponse:[action includeRawResponse]];
+                          includeRawResponse:[[action includeRawResponse] boolValue]];
         }
     }
     if ([self notificationActions]){
         for (IPMessageCompletionNotificationAction *action in [self notificationActions]){
             [messageEntity addNotificationAction:[action notificationName]
-                              includeRawResponse:[action includeRawResponse]];
+                              includeRawResponse:[[action includeRawResponse] boolValue]];
         }
     }
 }
