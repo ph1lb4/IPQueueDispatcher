@@ -7,12 +7,15 @@
 //
 
 #import "IPAppDelegate.h"
+#import <IPQueueDispatcher/IPMessagesHandler.h>
 
 @implementation IPAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    // Override point for customization after application launch.
+    [[IPMessagesHandler sharedInstance] setInterval:5];
+    [[IPMessagesHandler sharedInstance] initialize];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"kBaseSchedulerStart" object:nil];
     return YES;
 }
 

@@ -36,7 +36,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0C9E8C0F4BEBB26A3E6F2BBF /* IPQueueDispatcher.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = IPQueueDispatcher.podspec; path = ../IPQueueDispatcher.podspec; sourceTree = "<group>"; };
+		0C9E8C0F4BEBB26A3E6F2BBF /* IPQueueDispatcher.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; name = IPQueueDispatcher.podspec; path = ../IPQueueDispatcher.podspec; sourceTree = "<group>"; };
 		134D6EB3FF0EAFD60849A7E9 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		1F0D94802B33A9E49B91AE81 /* Pods_IPQueueDispatcher_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_IPQueueDispatcher_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2B4499E872CD963EC7C84C3A /* Pods-IPQueueDispatcher_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IPQueueDispatcher_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-IPQueueDispatcher_Tests/Pods-IPQueueDispatcher_Tests.debug.xcconfig"; sourceTree = "<group>"; };

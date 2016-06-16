@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="10174" systemVersion="15E65" minimumToolsVersion="Xcode 7.0">
+    <entity name="IPMessageCompletionAction" representedClassName="IPMessageCompletionAction" isAbstract="YES" syncable="YES">
+        <attribute name="completionActionType" optional="YES" attributeType="Integer 32" defaultValueString="0" indexed="YES" syncable="YES"/>
+        <attribute name="includeRawResponse" optional="YES" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
+    </entity>
+    <entity name="IPMessageCompletionDelegateAction" representedClassName="IPMessageCompletionDelegateAction" parentEntity="IPMessageCompletionAction" syncable="YES">
+        <attribute name="selector" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="message" optional="YES" maxCount="1" deletionRule="No Action" destinationEntity="IPMessageEntity" syncable="YES"/>
+    </entity>
+    <entity name="IPMessageCompletionNotificationAction" representedClassName="IPMessageCompletionNotificationAction" parentEntity="IPMessageCompletionAction" syncable="YES">
+        <attribute name="notificationName" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="message" optional="YES" maxCount="1" deletionRule="No Action" destinationEntity="IPMessageEntity" syncable="YES"/>
+    </entity>
+    <entity name="IPMessageEntity" representedClassName="IPMessageEntity" syncable="YES">
+        <attribute name="actionID" optional="YES" attributeType="Integer 64" defaultValueString="0" indexed="YES" syncable="YES"/>
+        <attribute name="createdAt" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="endedAt" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="isInvalid" optional="YES" attributeType="Boolean" indexed="YES" syncable="YES"/>
+        <attribute name="isSticky" optional="YES" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
+        <attribute name="isUnique" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="lastTriedAt" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="maximumTries" optional="YES" attributeType="Integer 32" defaultValueString="0" indexed="YES" syncable="YES"/>
+        <attribute name="needsAuthentication" optional="YES" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
+        <attribute name="path" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="priority" optional="YES" attributeType="Integer 32" defaultValueString="0" indexed="YES" syncable="YES"/>
+        <attribute name="protocol" optional="YES" attributeType="Integer 32" defaultValueString="0" indexed="YES" syncable="YES"/>
+        <attribute name="timesTried" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="uid" optional="YES" attributeType="String" indexed="YES" syncable="YES"/>
+        <relationship name="delegateActions" optional="YES" toMany="YES" deletionRule="No Action" destinationEntity="IPMessageCompletionDelegateAction" syncable="YES"/>
+        <relationship name="headers" optional="YES" toMany="YES" deletionRule="No Action" destinationEntity="IPMessageHeaderEntity" syncable="YES"/>
+        <relationship name="notificationActions" optional="YES" toMany="YES" deletionRule="No Action" destinationEntity="IPMessageCompletionNotificationAction" syncable="YES"/>
+        <relationship name="properties" optional="YES" toMany="YES" deletionRule="No Action" destinationEntity="IPMessagePropertyEntity" syncable="YES"/>
+        <relationship name="serializers" optional="YES" maxCount="1" deletionRule="No Action" destinationEntity="IPMessageSerializerEntity" syncable="YES"/>
+        <relationship name="url" optional="YES" maxCount="1" deletionRule="No Action" destinationEntity="IPMessageURLEntity" syncable="YES"/>
+    </entity>
+    <entity name="IPMessageHeaderEntity" representedClassName="IPMessageHeaderEntity" syncable="YES">
+        <attribute name="content" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="ommitEmptyValue" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <relationship name="message" optional="YES" maxCount="1" deletionRule="No Action" destinationEntity="IPMessageEntity" syncable="YES"/>
+    </entity>
+    <entity name="IPMessagePropertyEntity" representedClassName="IPMessagePropertyEntity" syncable="YES">
+        <attribute name="content" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="includeInURL" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="ommitEmptyValue" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <relationship name="message" optional="YES" maxCount="1" deletionRule="No Action" destinationEntity="IPMessageEntity" syncable="YES"/>
+    </entity>
+    <entity name="IPMessageSerializerEntity" representedClassName="IPMessageSerializerEntity" syncable="YES">
+        <attribute name="requestSerializerClass" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="requestSerializerID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="responseSerializerClass" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="responseSerializerID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <relationship name="message" optional="YES" maxCount="1" deletionRule="No Action" destinationEntity="IPMessageEntity" syncable="YES"/>
+    </entity>
+    <entity name="IPMessageURLEntity" representedClassName="IPMessageURLEntity" syncable="YES">
+        <attribute name="baseURL" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="path" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="message" optional="YES" maxCount="1" deletionRule="No Action" destinationEntity="IPMessageEntity" syncable="YES"/>
+    </entity>
+    <fetchRequest name="IPFetchRequestCollectValidMessages" entity="IPMessageEntity" predicateString="isInvalid == 0 AND (isSticky == 1 OR (endedAt == nil AND timesTried &lt; maximumTries))"/>
+    <fetchRequest name="IPFetchRequestGreaterOrEqualThanNormal" entity="IPMessageEntity" predicateString="priority &gt;= 1"/>
+    <fetchRequest name="IPFetchRequestHighPriorityMessages" entity="IPMessageEntity" predicateString="priority == 2"/>
+    <fetchRequest name="IPFetchRequestLowPriorityMessages" entity="IPMessageEntity" predicateString="priority == 0"/>
+    <fetchRequest name="IPFetchRequestNormalPriorityMessages" entity="IPMessageEntity" predicateString="priority == 1"/>
+    <fetchRequest name="IPFetchRequestStickyMessages" entity="IPMessageEntity" predicateString="isSticky == 1"/>
+    <elements>
+        <element name="IPMessageURLEntity" positionX="-216" positionY="-144" width="144" height="88"/>
+        <element name="IPMessageHeaderEntity" positionX="-0" positionY="-144" width="144" height="103"/>
+        <element name="IPMessageCompletionDelegateAction" positionX="358" positionY="161" width="263" height="73"/>
+        <element name="IPMessageCompletionAction" positionX="358" positionY="71" width="263" height="73"/>
+        <element name="IPMessageCompletionNotificationAction" positionX="360" positionY="252" width="263" height="73"/>
+        <element name="IPMessageEntity" positionX="36" positionY="81" width="128" height="343"/>
+        <element name="IPMessagePropertyEntity" positionX="63" positionY="503" width="198" height="118"/>
+        <element name="IPMessageSerializerEntity" positionX="-423" positionY="72" width="209" height="118"/>
+    </elements>
+</model>
