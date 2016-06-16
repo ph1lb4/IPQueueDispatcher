@@ -20,8 +20,4 @@
              value:(id)value
         collection:(NSMutableDictionary *)collection;
 
-- (void)addSafeKey:(NSString *)key
-             value:(id)value
-        collection:(NSMutableDictionary *)collection;
-
 @end

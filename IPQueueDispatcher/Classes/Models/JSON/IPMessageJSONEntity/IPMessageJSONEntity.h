@@ -39,42 +39,42 @@ typedef NS_ENUM(NSInteger, IPMessageProtocol) {
 @property (nullable, nonatomic) NSNumber *protocol;
 @property (nullable, nonatomic) NSNumber *timesTried;
 @property (nullable, nonatomic) NSString *uid;
-@property (nonatomic)IPMessageURLJSONEntity *url;
-@property (nonatomic)NSArray<IPMessageHeaderJSONEntity *> *headers;
-@property (nonatomic)NSArray<IPMessagePropertyJSONEntity *> *properties;
-@property (nonatomic)IPMessageSerializerJSONEntity *serializer;
-@property (nonatomic)NSArray<IPMessageCompletionDelegateActionJSONEntity *> *delegateActions;
-@property (nonatomic)NSArray<IPMessageCompletionNotificationJSONAction *> *notificationActions;
+@property (nonatomic)IPMessageURLJSONEntity  * _Nullable  url;
+@property (nonatomic)NSArray<IPMessageHeaderJSONEntity *> * _Nullable headers;
+@property (nonatomic)NSArray<IPMessagePropertyJSONEntity *> * _Nullable properties;
+@property (nonatomic)IPMessageSerializerJSONEntity * _Nullable serializer;
+@property (nonatomic)NSArray<IPMessageCompletionDelegateActionJSONEntity *> * _Nullable delegateActions;
+@property (nonatomic)NSArray<IPMessageCompletionNotificationJSONAction *> * _Nullable notificationActions;
 
 #pragma mark - URL
 
-- (void)setBaseURL:(NSString *)baseURL
-              path:(NSString *)path;
+- (void)setBaseURL:(NSString * _Nullable)baseURL
+              path:(NSString * _Nullable)path;
 
-- (void)setPath:(NSString *)path;
+- (void)setPath:(NSString * _Nullable)path;
 
 #pragma mark - Headers
 
-- (void)addHeaders:(NSDictionary *)headers
+- (void)addHeaders:(NSDictionary * _Nullable)headers
    ommitEmptyValue:(BOOL)ommitEmptyValue;
 
-- (void)addHeaderForKey:(NSString *)key
-                  value:(NSString *)value
+- (void)addHeaderForKey:(NSString * _Nullable)key
+                  value:(NSString * _Nullable)value
         ommitEmptyValue:(BOOL)ommitEmptyValue;
 
 #pragma mark - Properties
 
-- (void)addProperties:(NSDictionary *)propeties
+- (void)addProperties:(NSDictionary * _Nullable)propeties
          includeInURL:(BOOL)includeInURL
       ommitEmptyValue:(BOOL)ommitEmptyValue;
 
-- (void)addPropertyForKey:(NSString *)key
-                    value:(id)value
+- (void)addPropertyForKey:(NSString * _Nullable)key
+                    value:(id _Nullable)value
              includeInURL:(BOOL)includeInURL
           ommitEmptyValue:(BOOL)ommitEmptyValue;
 
-- (void)addPropertyForKey:(NSString *)key
-                    value:(id)valuel;
+- (void)addPropertyForKey:(NSString * _Nullable)key
+                    value:(id _Nullable)value;
 
 #pragma mark - Serializer
 
@@ -85,19 +85,19 @@ typedef NS_ENUM(NSInteger, IPMessageProtocol) {
 - (void)setRequestSerializer:(NSInteger)requestSerializerId
         responseSerializerId:(NSInteger)responseSerializerId;
 
-- (void)setRequestSerializerClass:(NSString *)requestSerializerClass
-          responseSerializerClass:(NSString *)responseSerializerClass;
+- (void)setRequestSerializerClass:(NSString * _Nullable)requestSerializerClass
+          responseSerializerClass:(NSString * _Nullable)responseSerializerClass;
 
 #pragma mark - Delegate Actions
 
-- (void)addDelegateAction:(NSString *)selector
+- (void)addDelegateAction:(NSString * _Nullable)selector
        includeRawResponse:(BOOL)includeRawResponse;
 
-- (void)addNotificationAction:(NSString *)notificationName
+- (void)addNotificationAction:(NSString * _Nullable)notificationName
            includeRawResponse:(BOOL)includeRawResponse;
 
 #pragma mark - Helpers
 
-- (NSDictionary *)propertiesAsDictionary;
+- (NSDictionary * _Nullable)propertiesAsDictionary;
 
 @end

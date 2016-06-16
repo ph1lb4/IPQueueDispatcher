@@ -9,6 +9,7 @@
 #import "IPNetworkLayer.h"
 #import <AFNetworking/AFNetworking.h>
 #import "NSString+IPQueueDispatcher.h"
+#import "Macros.h"
 #pragma mark - CoreData Entities
 #import "IPMessageEntity.h"
 #import "IPMessageURLEntity.h"

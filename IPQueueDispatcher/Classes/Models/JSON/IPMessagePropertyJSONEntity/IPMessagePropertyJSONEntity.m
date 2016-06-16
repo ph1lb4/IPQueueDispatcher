@@ -12,7 +12,6 @@
 
 @implementation IPMessagePropertyJSONEntity
 
-#import "NSObject+IPQueueDispatcher.h"
 - (NSDictionary *)JSONKeyPathsByPropertyKey
 {
     return @{@"content":@"content",
