@@ -7,34 +7,23 @@
 #
 
 Pod::Spec.new do |s|
-s.name             = 'IPQueueDispatcher'
-s.version          = '0.1.0'
-s.summary          = 'Queue Dispatcher'
-
-# This description is used to generate tags and improve search results.
-#   * Think: What does it do? Why did you write it? What is the focus?
-#   * Try to keep it short, snappy and to the point.
-#   * Write the description between the DESC delimiters below.
-#   * Finally, don't worry about the indent, CocoaPods strips it!
-
-s.description      = "A Queue dispatcher"
-s.homepage         = 'https://github.com/ipavlidakis/IPQueueDispatcher'
-s.license          = { :type => 'MIT', :file => 'LICENSE' }
-s.author           = { 'Ilias Pavlidakis' => 'ipavlidakis@gmail.com' }
-s.source           = { :git => 'https://github.com/ipavlidakis/IPQueueDispatcher.git', :tag => "#{s.version}" }
-s.social_media_url = 'https://twitter.com/3liaspav'
-
-s.ios.deployment_target = '8.0'
-
-s.source_files = 'IPQueueDispatcher/Classes/**/*.{h,m}'
-
-# s.resource_bundles = {
-#   'IPQueueDispatcher' => ['IPQueueDispatcher/Assets/*.png']
-# }
-
-s.requires_arc = true
-# s.public_header_files = 'Pod/Classes/**/*.h'
-# s.frameworks = 'UIKit', 'MapKit'
-s.dependency "MagicalRecord"
-s.dependency "AFNetworking"
+    s.name             = 'IPQueueDispatcher'
+    s.version          = '0.1.0'
+    s.summary          = 'Queue Dispatcher'
+    s.description      = "A Queue dispatcher"
+    s.homepage         = 'https://github.com/ipavlidakis/IPQueueDispatcher'
+    s.license          = { :type => 'MIT', :file => 'LICENSE' }
+    s.author           = { 'Ilias Pavlidakis' => 'ipavlidakis@gmail.com' }
+    s.source           = { :git => 'https://github.com/ipavlidakis/IPQueueDispatcher.git', :tag => "#{s.version}" }
+    s.social_media_url = 'https://twitter.com/3liaspav'
+    s.ios.deployment_target = '8.0'
+    s.public_header_files = 'PoIPQueueDispatcherd/Classes/**/*.h'
+    s.source_files = 'IPQueueDispatcher/Classes/**/*.{h,m,xcdatamodeld}'
+    s.resources = 'IPQueueDispatcher/Classes/Models/Schema/*.xcdatamodeld'
+    s.resources = [ 'IPQueueDispatcher/Classes/Models/Schema/IPQueueDispatcherModel.xcdatamodeld','IPQueueDispatcher/Classes/Models/Schema/IPQueueDispatcherModel.xcdatamodeld/*.xcdatamodel']
+    s.preserve_paths = 'IPQueueDispatcher/Classes/Models/Schema/IPQueueDispatcherModel.xcdatamodeld'
+    s.framework  = 'CoreData'
+    s.requires_arc = true
+    s.dependency "MagicalRecord"
+    s.dependency "AFNetworking"
 end
