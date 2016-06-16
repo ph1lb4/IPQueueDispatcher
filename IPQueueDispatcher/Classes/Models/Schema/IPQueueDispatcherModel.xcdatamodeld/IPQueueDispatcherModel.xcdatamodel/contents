@@ -6,11 +6,11 @@
     </entity>
     <entity name="IPMessageCompletionDelegateAction" representedClassName="IPMessageCompletionDelegateAction" parentEntity="IPMessageCompletionAction" syncable="YES">
         <attribute name="selector" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="message" optional="YES" maxCount="1" deletionRule="No Action" destinationEntity="IPMessageEntity" syncable="YES"/>
+        <relationship name="message" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="IPMessageEntity" syncable="YES"/>
     </entity>
     <entity name="IPMessageCompletionNotificationAction" representedClassName="IPMessageCompletionNotificationAction" parentEntity="IPMessageCompletionAction" syncable="YES">
         <attribute name="notificationName" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="message" optional="YES" maxCount="1" deletionRule="No Action" destinationEntity="IPMessageEntity" syncable="YES"/>
+        <relationship name="message" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="IPMessageEntity" syncable="YES"/>
     </entity>
     <entity name="IPMessageEntity" representedClassName="IPMessageEntity" syncable="YES">
         <attribute name="actionID" optional="YES" attributeType="Integer 64" defaultValueString="0" indexed="YES" syncable="YES"/>
@@ -27,37 +27,37 @@
         <attribute name="protocol" optional="YES" attributeType="Integer 32" defaultValueString="0" indexed="YES" syncable="YES"/>
         <attribute name="timesTried" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="uid" optional="YES" attributeType="String" indexed="YES" syncable="YES"/>
-        <relationship name="delegateActions" optional="YES" toMany="YES" deletionRule="No Action" destinationEntity="IPMessageCompletionDelegateAction" syncable="YES"/>
-        <relationship name="headers" optional="YES" toMany="YES" deletionRule="No Action" destinationEntity="IPMessageHeaderEntity" syncable="YES"/>
-        <relationship name="notificationActions" optional="YES" toMany="YES" deletionRule="No Action" destinationEntity="IPMessageCompletionNotificationAction" syncable="YES"/>
-        <relationship name="properties" optional="YES" toMany="YES" deletionRule="No Action" destinationEntity="IPMessagePropertyEntity" syncable="YES"/>
-        <relationship name="serializers" optional="YES" maxCount="1" deletionRule="No Action" destinationEntity="IPMessageSerializerEntity" syncable="YES"/>
-        <relationship name="url" optional="YES" maxCount="1" deletionRule="No Action" destinationEntity="IPMessageURLEntity" syncable="YES"/>
+        <relationship name="delegateActions" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="IPMessageCompletionDelegateAction" syncable="YES"/>
+        <relationship name="headers" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="IPMessageHeaderEntity" syncable="YES"/>
+        <relationship name="notificationActions" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="IPMessageCompletionNotificationAction" syncable="YES"/>
+        <relationship name="properties" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="IPMessagePropertyEntity" syncable="YES"/>
+        <relationship name="serializers" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="IPMessageSerializerEntity" syncable="YES"/>
+        <relationship name="url" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="IPMessageURLEntity" syncable="YES"/>
     </entity>
     <entity name="IPMessageHeaderEntity" representedClassName="IPMessageHeaderEntity" syncable="YES">
         <attribute name="content" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="ommitEmptyValue" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <relationship name="message" optional="YES" maxCount="1" deletionRule="No Action" destinationEntity="IPMessageEntity" syncable="YES"/>
+        <relationship name="message" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="IPMessageEntity" syncable="YES"/>
     </entity>
     <entity name="IPMessagePropertyEntity" representedClassName="IPMessagePropertyEntity" syncable="YES">
         <attribute name="content" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="includeInURL" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="ommitEmptyValue" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <relationship name="message" optional="YES" maxCount="1" deletionRule="No Action" destinationEntity="IPMessageEntity" syncable="YES"/>
+        <relationship name="message" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="IPMessageEntity" syncable="YES"/>
     </entity>
     <entity name="IPMessageSerializerEntity" representedClassName="IPMessageSerializerEntity" syncable="YES">
         <attribute name="requestSerializerClass" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="requestSerializerID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="responseSerializerClass" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="responseSerializerID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <relationship name="message" optional="YES" maxCount="1" deletionRule="No Action" destinationEntity="IPMessageEntity" syncable="YES"/>
+        <relationship name="message" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="IPMessageEntity" syncable="YES"/>
     </entity>
     <entity name="IPMessageURLEntity" representedClassName="IPMessageURLEntity" syncable="YES">
         <attribute name="baseURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="path" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="message" optional="YES" maxCount="1" deletionRule="No Action" destinationEntity="IPMessageEntity" syncable="YES"/>
+        <relationship name="message" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="IPMessageEntity" syncable="YES"/>
     </entity>
     <fetchRequest name="IPFetchRequestCollectValidMessages" entity="IPMessageEntity" predicateString="isInvalid == 0 AND (isSticky == 1 OR (endedAt == nil AND timesTried &lt; maximumTries))"/>
     <fetchRequest name="IPFetchRequestGreaterOrEqualThanNormal" entity="IPMessageEntity" predicateString="priority &gt;= 1"/>
