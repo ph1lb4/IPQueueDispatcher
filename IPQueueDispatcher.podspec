@@ -17,8 +17,8 @@ Pod::Spec.new do |s|
     s.source           = { :git => 'https://github.com/ipavlidakis/IPQueueDispatcher.git', :tag => "#{s.version}" }
     s.social_media_url = 'https://twitter.com/3liaspav'
     s.ios.deployment_target = '8.0'
-    s.public_header_files = 'IPQueueDispatcher/Classes/**/*.h'
-    s.public_header_files = 'IPQueueDispatcher/Classes/IPQueueDispatcherHeader.h'
+    #    s.public_header_files = 'IPQueueDispatcher/Classes/**/*.h'
+    #    s.public_header_files = 'IPQueueDispatcher/Classes/IPQueueDispatcherHeader.h'
     s.source_files = 'IPQueueDispatcher/Classes/**/*.{h,m,xcdatamodeld}'
     s.resources = 'IPQueueDispatcher/Classes/Models/Schema/*.xcdatamodeld'
     s.resources = [ 'IPQueueDispatcher/Classes/Models/Schema/IPQueueDispatcherModel.xcdatamodeld','IPQueueDispatcher/Classes/Models/Schema/IPQueueDispatcherModel.xcdatamodeld/*.xcdatamodel']
