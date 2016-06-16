@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class IPQueueDispatcher;
+@class IPQueueDispatcher, IPMessageJSONEntity;
 
 @interface IPScheduler : NSObject
 
@@ -21,5 +21,15 @@
 - (void)start;
 
 - (void)stop;
+
+#pragma mark - Timer Tick
+
+- (void)scheduledExecution:(NSTimer *_Nonnull)timer;
+
+#pragma mark - Add Scheduled Messages
+
+- (void)addScheduledMessage:(IPMessageJSONEntity *_Nonnull)message;
+
+- (void)prepareMessages;
 
 @end

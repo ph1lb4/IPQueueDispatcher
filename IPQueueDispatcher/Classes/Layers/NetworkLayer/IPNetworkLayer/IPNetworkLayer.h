@@ -34,28 +34,8 @@ typedef void (^IPNetworkLayerFailureBlock)(NSURLSessionDataTask *task, NSError *
 
 #pragma mark - Perform Requests
 
-- (void)jsonGET:(NSString *)path
-     identifier:(NSInteger)identifier
-     parameters:(NSDictionary *)parameters
-        success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
-        failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure;
-
-- (void)jsonPOST:(NSString *)path
-      identifier:(NSInteger)identifier
-      parameters:(NSDictionary *)parameters
-         success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
-         failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure;
-
-- (void)jsonPUT:(NSString *)path
-     identifier:(NSInteger)identifier
-     parameters:(NSDictionary *)parameters
-        success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
-        failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure;
-
-- (void)jsonDELETE:(NSString *)path
-        identifier:(NSInteger)identifier
-        parameters:(NSDictionary *)parameters
-           success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
-           failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure;
+- (void)executeMessageJSON:(IPMessageJSONEntity *)message
+                   success:(IPNetworkLayerSuccessBlock)success
+                   failure:(IPNetworkLayerFailureBlock)failure;
 
 @end

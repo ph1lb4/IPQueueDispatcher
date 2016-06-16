@@ -66,13 +66,13 @@
 
 #pragma mark - Add Scheduled Messages
 
-- (void)addScheduledMessage:(NSDictionary *)messageData
+- (void)addScheduledMessage:(IPMessageJSONEntity *)message
 {
-    if (!messageData) return;
+    if (!message) return;
     if (![self scheduledMessages]) {
         [self setScheduledMessages:[NSMutableArray new]];
     }
-    [self.scheduledMessages addObject:messageData];
+    [self.scheduledMessages addObject:message];
 }
 
 - (void)prepareMessages

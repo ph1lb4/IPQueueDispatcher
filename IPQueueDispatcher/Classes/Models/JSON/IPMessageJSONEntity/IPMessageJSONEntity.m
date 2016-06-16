@@ -29,6 +29,7 @@
         [self setPriority:@(IPMessagePriorityNormal)];
         [self setProtocol:@(IPMessageProtocolGET)];
     }
+    return self;
 }
 
 - (NSDictionary *)JSONKeyPathsByPropertyKey

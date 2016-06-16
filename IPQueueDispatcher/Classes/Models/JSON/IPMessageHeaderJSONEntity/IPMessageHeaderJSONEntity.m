@@ -27,10 +27,10 @@
     result = [NSString isNotEmpty:[self name]] && [NSString isNotEmpty:[self content]];
     if (!result && ![[self ommitEmptyValue] boolValue]){
         if (![NSString isNotEmpty:[self name]]){
-            [self setName:[NSNull null]];
+            [self setName:@""];
         }
         if (![NSString isNotEmpty:[self content]]){
-            [self setContent:[NSNull null]];
+            [self setContent:@""];
         }
         result = YES;
     }

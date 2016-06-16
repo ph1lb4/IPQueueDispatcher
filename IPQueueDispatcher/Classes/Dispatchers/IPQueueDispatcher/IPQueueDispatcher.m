@@ -16,6 +16,7 @@
 #import "NSDictionary+IPQueueDispatcher.h"
 #import "NSString+IPQueueDispatcher.h"
 #import "IPBackEndLayer.h"
+#import "Macros.h"
 
 NSString * const IPQueueDispatcherName = @"com.queuedispatcher.ip";
 NSString * const IPQueueDispatcherDelegateResultMessageKey = @"IPQueueDispatcherDelegateResultMessageKey";
@@ -67,7 +68,7 @@ NSString * const IPQueueDispatcherDelegateResultErrorKey = @"IPQueueDispatcherDe
 {
     @try {
         if ([self backEndLayer] && [[message delegateActions] count] > 0){
-            NSArray<IPMessageCompletionDelegateActionJSONEntity *> *actions = [[message notificationActions] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF.completionActionType IN %@",notificationTypes]];
+            NSArray<IPMessageCompletionDelegateActionJSONEntity *> *actions = [[message delegateActions] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF.completionActionType IN %@",notificationTypes]];
             
             for (IPMessageCompletionDelegateActionJSONEntity *action in actions){
                 SEL selector = NSSelectorFromString([action selector]);
@@ -86,8 +87,8 @@ NSString * const IPQueueDispatcherDelegateResultErrorKey = @"IPQueueDispatcherDe
                 }
                 
                 if ([[self backEndLayer] respondsToSelector:selector]){
-                    [self.backEndLayer performSelector:selector
-                                            withObject:result];
+                    SUPPRESS_PERFORM_SELECTOR_LEAK_WARNING([self.backEndLayer performSelector:selector
+                                                                                   withObject:result];)
                 }
             }
         }
@@ -106,7 +107,7 @@ NSString * const IPQueueDispatcherDelegateResultErrorKey = @"IPQueueDispatcherDe
         if ([[message notificationActions] count] > 0){
             NSArray<IPMessageCompletionNotificationJSONAction *> *actions = [[message notificationActions] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF.completionActionType IN %@",notificationTypes]];
             
-            for (IPMessageCompletionNotificationJSONAction *action in [message notificationActions]){
+            for (IPMessageCompletionNotificationJSONAction *action in actions){
                 if ([NSString isNotEmpty:[action notificationName]]){
                     NSDictionary *result = @{IPQueueDispatcherDelegateResultMessageKey:message?:[NSNull null]};
                     
@@ -187,7 +188,7 @@ NSString * const IPQueueDispatcherDelegateResultErrorKey = @"IPQueueDispatcherDe
                 messages = @[];
             } else if ([messages count] > 0){
                 NSLog(@"[I] %@ messages collected and are preparing for execution",@([messages count]));
-                [weakSelf executeMessages:messages];
+                [weakSelf executeMessages:[self processMessages:messages]];
             } else {
                 NSLog(@"[I] No messages found");
             }
@@ -195,18 +196,24 @@ NSString * const IPQueueDispatcherDelegateResultErrorKey = @"IPQueueDispatcherDe
     }];
 }
 
-- (void)processMessages:(NSArray<IPMessageEntity *> *)messages
+- (NSArray<IPMessageJSONEntity *> *)processMessages:(NSArray<IPMessageEntity *> *)messages
 {
+    NSMutableArray *result = [NSMutableArray new];
     for (IPMessageEntity *message in messages){
-        
+        [result addObject:[message toJSONObject]];
     }
+    return result;
 }
 
 #pragma mark - Handle Queue
 
-- (void)executeMessages:(NSArray<IPMessageEntity *> *)messages
+- (void)executeMessages:(NSArray<IPMessageJSONEntity *> *)messages
 {
-    
+    for (IPMessageJSONEntity *message in messages){
+        [self.networkLayer executeMessageJSON:message
+                                      success:nil
+                                      failure:nil];
+    }
 }
 
 #pragma mark - Triggers

@@ -95,6 +95,7 @@
                               includeRawResponse:[[action includeRawResponse] boolValue]];
         }
     }
+    return messageEntity;
 }
 
 @end

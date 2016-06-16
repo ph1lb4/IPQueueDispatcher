@@ -42,6 +42,8 @@
 - (IPMessageJSONEntity *)reAuthenticate
 {
     NSLog(@"[W]reAuthenticate is not implemented");
+    return nil;
+    
 }
 
 @end
