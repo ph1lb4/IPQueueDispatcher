@@ -1,6 +1,6 @@
 # IPQueueDispatcher
 
-[![CI Status](http://img.shields.io/travis/Ilias Pavlidakis/IPQueueDispatcher.svg?style=flat)](https://travis-ci.org/Ilias Pavlidakis/IPQueueDispatcher)
+[![CI Status](https://travis-ci.org/ipavlidakis/IPQueueDispatcher.svg?branch=master)](https://travis-ci.org/Ilias Pavlidakis/IPQueueDispatcher)
 [![Version](https://img.shields.io/cocoapods/v/IPQueueDispatcher.svg?style=flat)](http://cocoapods.org/pods/IPQueueDispatcher)
 [![License](https://img.shields.io/cocoapods/l/IPQueueDispatcher.svg?style=flat)](http://cocoapods.org/pods/IPQueueDispatcher)
 [![Platform](https://img.shields.io/cocoapods/p/IPQueueDispatcher.svg?style=flat)](http://cocoapods.org/pods/IPQueueDispatcher)
