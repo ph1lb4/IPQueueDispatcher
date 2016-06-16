@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class IPQueueDispatcher, IPScheduler, IPMessageJSONEntity;
+@class IPQueueDispatcher, IPScheduler, IPMessageJSONEntity, IPNetworkLayer, IPBackEndLayer;
 
 @interface IPMessagesHandler : NSObject
 
@@ -22,6 +22,14 @@
 #pragma mark - Scheduler
 
 - (void)setCustomScheduler:(IPScheduler *)scheduler;
+
+#pragma mark - Network Layer
+
+- (void)setCustomNetworkLayer:(IPNetworkLayer *)networkLayer;
+
+#pragma mark - BackEnd Layer
+
+- (void)setCustomBackEndLayer:(IPBackEndLayer *)backEndLayer;
 
 #pragma mark - Messages
 

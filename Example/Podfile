@@ -1,12 +1,12 @@
 use_frameworks!
 
 target 'IPQueueDispatcher_Example' do
-  pod 'IPQueueDispatcher', :path => '../'
-
-  target 'IPQueueDispatcher_Tests' do
-    inherit! :search_paths
-
-    pod 'Specta'
-  pod 'Expecta'
-  end
+    pod 'IPQueueDispatcher', :path => '../'
+    
+    target 'IPQueueDispatcher_Tests' do
+        inherit! :search_paths
+        
+        #    pod 'Specta'
+        #  pod 'Expecta'
+    end
 end

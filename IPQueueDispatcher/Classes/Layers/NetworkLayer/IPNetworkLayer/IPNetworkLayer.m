@@ -29,7 +29,8 @@
 
 @interface IPNetworkLayer ()
 @property (nonatomic) AFHTTPSessionManager *manager;
-@property (nonatomic,getter=isReauthenticating) BOOL reauthenticating;
+@property (nonatomic, getter=isReauthenticating) BOOL reauthenticating;
+@property (nonatomic, readwrite) NSString *baseURL;
 @end
 
 @implementation IPNetworkLayer
@@ -55,6 +56,11 @@
     return self;
 }
 
+- (instancetype)initWithBaseURL:(NSString *)baseURL
+{
+    return [self initWithDelegate:nil baseURL:baseURL];
+}
+
 - (BOOL)isReachable
 {
     return [[AFNetworkReachabilityManager sharedManager] isReachable];
@@ -77,6 +83,14 @@
     if ([[self.manager operationQueue] operationCount]){
         [[[[self.manager operationQueue] operations] firstObject] resume];
     }
+}
+
+#pragma mark - Response format
+
+- (id)formatResponseObject:(id)responseObject
+                  actionID:(NSNumber *)actionID
+{
+    return responseObject;
 }
 
 #pragma mark - Perform Requests
@@ -217,8 +231,8 @@
                              success:success
                              failure:failure];
         } else {
-            [weakSelf delegateFailCallForPath:message
-                                        error:error];
+            [weakSelf delegateFailedCallForPath:message
+                                          error:error];
             if (failure){
                 failure(task,error);
             }
@@ -236,21 +250,27 @@
             [self pauseAll];
             [self setReauthenticating:YES];
             IPMessageJSONEntity *reAuthenticationMessage = [self.delegate reAuthenticate];
-            [reAuthenticationMessage setActionID:@(-9999)];
-            [reAuthenticationMessage setNeedsAuthentication:@NO];
-            
-            __weak typeof(self) weakSelf = self;
-            [self executeMessageJSON:reAuthenticationMessage
-                             success:^(NSURLSessionDataTask *task, id responseObject) {
-                                 [weakSelf resume];
-                                 [weakSelf setReauthenticating:NO];
-                                 [weakSelf executeMessageJSON:message
-                                                      success:success
-                                                      failure:failure];
-                             } failure:^(NSURLSessionDataTask *task, NSError *error) {
-                                 NSLog(@"[W]Reauthentication failed.");
-                                 [weakSelf setReauthenticating:NO];
-                             }];
+            if (reAuthenticationMessage){
+                [reAuthenticationMessage setActionID:@(-9999)];
+                [reAuthenticationMessage setNeedsAuthentication:@NO];
+                
+                __weak typeof(self) weakSelf = self;
+                [self executeMessageJSON:reAuthenticationMessage
+                                 success:^(NSURLSessionDataTask *task, id responseObject) {
+                                     [weakSelf resume];
+                                     [weakSelf setReauthenticating:NO];
+                                     [weakSelf delegateSuccessReAuthenticationCall:reAuthenticationMessage
+                                                                          response:responseObject];
+                                     [weakSelf executeMessageJSON:message
+                                                          success:success
+                                                          failure:failure];
+                                 } failure:^(NSURLSessionDataTask *task, NSError *error) {
+                                     NSLog(@"[W]Reauthentication failed.");
+                                     [weakSelf delegateFailedReAuthenticationCall:reAuthenticationMessage
+                                                                            error:error];
+                                     [weakSelf setReauthenticating:NO];
+                                 }];
+            }
         }
     }
 }
@@ -260,38 +280,59 @@
 - (void)delegateSuccessCallForPath:(IPMessageJSONEntity *)message
                           response:(id)responseObject
 {
-    //    responseObject = [self formatResponseObject:responseObject
-    //                                     identifier:identifier];
-    //    if ([self delegate] && [self.delegate conformsToProtocol:@protocol(FGBaseNetworkLayerProtocol)])
-    //    {
-    //        [self.delegate successfulOperation:path
-    //                                identifier:identifier
-    //                                  response:responseObject
-    //                                parameters:parameters];
-    //    } else {
-    //        NSLog(@"[W] No delegate found for networkLayer!");
-    //    }
+    id formattedResponseObject = [self formatResponseObject:responseObject actionID:[message actionID]];
+    if ([self delegate] && [self.delegate respondsToSelector:@selector(successfulOperation:formattedResponseObject:responseObject:)]){
+        [self.delegate successfulOperation:message
+                   formattedResponseObject:formattedResponseObject
+                            responseObject:responseObject];
+    } else {
+        NSLog(@"[W]No delegate found for IPNetworkLayer instance");
+    }
 }
 
-- (void)delegateFailCallForPath:(IPMessageJSONEntity *)message
-                          error:(NSError *)error
+- (void)delegateFailedCallForPath:(IPMessageJSONEntity *)message
+                            error:(NSError *)error
 {
-    //    error = [self getServerError:error];
-    //    if ([self delegate] && [self.delegate conformsToProtocol:@protocol(FGBaseNetworkLayerProtocol)])
-    //    {
-    //        [self.delegate failedOperation:path
-    //                            identifier:identifier
-    //                                 error:error];
-    //    }
+    if ([self delegate] && [self.delegate respondsToSelector:@selector(failedOperation:error:)]){
+        [self.delegate failedOperation:message
+                                 error:error];
+    } else {
+        NSLog(@"[W]No delegate found for IPNetworkLayer instance");
+    }
 }
 
 - (void)delegateNoConnectionCallForPath:(IPMessageJSONEntity *)message
 {
-    //    if ([self delegate] && [self.delegate conformsToProtocol:@protocol(FGBaseNetworkLayerProtocol)])
-    //    {
-    //        [self.delegate noInternetOperation:path
-    //                                identifier:identifier];
-    //    }
+    if ([self delegate] && [self.delegate respondsToSelector:@selector(noInternetOperation:)]){
+        [self.delegate noInternetOperation:message];
+    } else {
+        NSLog(@"[W]No delegate found for IPNetworkLayer instance");
+    }
+}
+
+- (void)delegateSuccessReAuthenticationCall:(IPMessageJSONEntity *)reAuthenticationMessage
+                                   response:(id)responseObject
+{
+    id formattedResponseObject = [self formatResponseObject:responseObject actionID:[reAuthenticationMessage actionID]];
+    if ([self delegate] && [self.delegate respondsToSelector:@selector(successfulReAuthenticationOperation:formattedResponseObject:responseObject:)]){
+        [self.delegate successfulReAuthenticationOperation:reAuthenticationMessage
+                                   formattedResponseObject:formattedResponseObject
+                                            responseObject:responseObject];
+    } else {
+        NSLog(@"[W]No delegate found for IPNetworkLayer instance");
+    }
+}
+
+- (void)delegateFailedReAuthenticationCall:(IPMessageJSONEntity *)reAuthenticationMessage
+                                     error:(NSError *)error
+{
+    if ([self delegate] && [self.delegate respondsToSelector:@selector(failedReAuthenticationOperation:error:)]){
+        [self.delegate failedReAuthenticationOperation:reAuthenticationMessage
+                                                 error:error];
+    } else {
+        NSLog(@"[W]No delegate found for IPNetworkLayer instance");
+    }
+    
 }
 
 @end

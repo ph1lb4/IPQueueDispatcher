@@ -7,46 +7,17 @@
 //
 
 #import <Foundation/Foundation.h>
-
-@class AFHTTPRequestSerializer, IPMessageJSONEntity;
-
-@protocol IPNetworkLayerProtocol <NSObject>
-
-@optional
-
-- (IPMessageJSONEntity *)reAuthenticate;
-
-- (void)reAuthenticatedSuccessfully:(id)responseObject;
-
-- (void)reAuthenticatedFailed:(NSError *)error;
-
-- (void)successfulOperation:(NSString *)path
-                 identifier:(NSInteger)identifier
-                   response:(id)response
-                 parameters:(NSDictionary *)parameters;
-
-- (void)failedOperation:(NSString *)path
-             identifier:(NSInteger)identifier
-                  error:(NSError *)error;
-
-- (void)noInternetOperation:(NSString *)path
-                 identifier:(NSInteger)identifier;
-
-- (void)authenticationDataForRequestSerializer:(AFHTTPRequestSerializer *)serializer
-                                          path:(NSString *)path;
-
-@end
+#import "IPNetworkLayerProtocol.h"
 
 @interface IPNetworkLayer : NSObject
 
 typedef void (^IPNetworkLayerSuccessBlock)(NSURLSessionDataTask *task, id responseObject);
 typedef void (^IPNetworkLayerFailureBlock)(NSURLSessionDataTask *task, NSError *error);
 
-@property (nonatomic) NSString *baseURL;
+@property (nonatomic, readonly) NSString *baseURL;
 @property (nonatomic) id<IPNetworkLayerProtocol> delegate;
 
-- (instancetype)initWithDelegate:(id<IPNetworkLayerProtocol>)delegate
-                         baseURL:(NSString *)baseURL;
+- (instancetype)initWithBaseURL:(NSString *)baseURL;
 
 #pragma mark - Queue Handlers
 
@@ -55,6 +26,11 @@ typedef void (^IPNetworkLayerFailureBlock)(NSURLSessionDataTask *task, NSError *
 - (void)pauseAll;
 
 - (void)resume;
+
+#pragma mark - Response format
+
+- (id)formatResponseObject:(id)responseObject
+                  actionID:(NSNumber *)actionID;
 
 #pragma mark - Perform Requests
 

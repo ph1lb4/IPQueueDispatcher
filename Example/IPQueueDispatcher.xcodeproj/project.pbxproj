@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2D807CDEF3FBD778A6DAF7B8 /* Pods_IPQueueDispatcher_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9C1851D387CE5322D75B93A /* Pods_IPQueueDispatcher_Example.framework */; };
+		40CACD3B1D12DE8000EAB478 /* IPQueueDispatcherBaseTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 40CACD3A1D12DE8000EAB478 /* IPQueueDispatcherBaseTestCase.m */; };
 		6003F58E195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
 		6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58F195388D20070C39A /* CoreGraphics.framework */; };
 		6003F592195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
@@ -20,7 +21,6 @@
 		6003F5B1195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
 		6003F5B2195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
 		6003F5BA195388D20070C39A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6003F5B8195388D20070C39A /* InfoPlist.strings */; };
-		6003F5BC195388D20070C39A /* Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F5BB195388D20070C39A /* Tests.m */; };
 		617C6FF51C56757208FF3F26 /* Pods_IPQueueDispatcher_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F0D94802B33A9E49B91AE81 /* Pods_IPQueueDispatcher_Tests.framework */; };
 		873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 873B8AEA1B1F5CCA007FD442 /* Main.storyboard */; };
 /* End PBXBuildFile section */
@@ -40,6 +40,7 @@
 		134D6EB3FF0EAFD60849A7E9 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		1F0D94802B33A9E49B91AE81 /* Pods_IPQueueDispatcher_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_IPQueueDispatcher_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2B4499E872CD963EC7C84C3A /* Pods-IPQueueDispatcher_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IPQueueDispatcher_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-IPQueueDispatcher_Tests/Pods-IPQueueDispatcher_Tests.debug.xcconfig"; sourceTree = "<group>"; };
+		40CACD3A1D12DE8000EAB478 /* IPQueueDispatcherBaseTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IPQueueDispatcherBaseTestCase.m; path = IPQueueDispatcherBaseTestCase/IPQueueDispatcherBaseTestCase.m; sourceTree = "<group>"; };
 		57BC02C191EC0EE3F5DB60C5 /* Pods-IPQueueDispatcher_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IPQueueDispatcher_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-IPQueueDispatcher_Tests/Pods-IPQueueDispatcher_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		6003F58A195388D20070C39A /* IPQueueDispatcher_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IPQueueDispatcher_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6003F58D195388D20070C39A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -58,7 +59,6 @@
 		6003F5AF195388D20070C39A /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		6003F5B7195388D20070C39A /* Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Tests-Info.plist"; sourceTree = "<group>"; };
 		6003F5B9195388D20070C39A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		6003F5BB195388D20070C39A /* Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Tests.m; sourceTree = "<group>"; };
 		606FC2411953D9B200FFA9A0 /* Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tests-Prefix.pch"; sourceTree = "<group>"; };
 		7C67EA551BB0D20C0F3EC3AE /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		83072CD4FBC9BDDA8CC987CA /* Pods-IPQueueDispatcher_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IPQueueDispatcher_Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-IPQueueDispatcher_Example/Pods-IPQueueDispatcher_Example.debug.xcconfig"; sourceTree = "<group>"; };
@@ -93,6 +93,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		40CACD391D12DE5B00EAB478 /* IPQueueDispatcherBaseTestCase */ = {
+			isa = PBXGroup;
+			children = (
+				40CACD3A1D12DE8000EAB478 /* IPQueueDispatcherBaseTestCase.m */,
+			);
+			name = IPQueueDispatcherBaseTestCase;
+			sourceTree = "<group>";
+		};
 		6003F581195388D10070C39A = {
 			isa = PBXGroup;
 			children = (
@@ -156,7 +164,7 @@
 		6003F5B5195388D20070C39A /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				6003F5BB195388D20070C39A /* Tests.m */,
+				40CACD391D12DE5B00EAB478 /* IPQueueDispatcherBaseTestCase */,
 				6003F5B6195388D20070C39A /* Supporting Files */,
 			);
 			path = Tests;
@@ -400,7 +408,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6003F5BC195388D20070C39A /* Tests.m in Sources */,
+				40CACD3B1D12DE8000EAB478 /* IPQueueDispatcherBaseTestCase.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

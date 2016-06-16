@@ -7,10 +7,16 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "IPNetworkLayerProtocol.h"
 
-@class NSManagedObjectContext, NSManagedObjectModel, IPNetworkLayer;
+@class NSManagedObjectContext, NSManagedObjectModel, IPNetworkLayer, IPBackEndLayer;
 
-@interface IPQueueDispatcher : NSObject
+FOUNDATION_EXPORT NSString *const IPQueueDispatcherDelegateResultMessageKey;
+FOUNDATION_EXPORT NSString *const IPQueueDispatcherDelegateResultFormattedResponseKey;
+FOUNDATION_EXPORT NSString *const IPQueueDispatcherDelegateResultRawResponseKey;
+FOUNDATION_EXPORT NSString *const IPQueueDispatcherDelegateResultErrorKey;
+
+@interface IPQueueDispatcher : NSObject<IPNetworkLayerProtocol>
 
 typedef NS_ENUM(NSInteger, IPFetchRequests) {
     IPFetchRequestCollectValidMessages = 0,
@@ -22,6 +28,7 @@ typedef NS_ENUM(NSInteger, IPFetchRequests) {
 };
 
 @property (nonatomic, strong) IPNetworkLayer *networkLayer;
+@property (nonatomic, strong) IPBackEndLayer *backEndLayer;
 
 - (instancetype)initWithManagedObjectContext:(NSManagedObjectContext *)context
                           managedObjectModel:(NSManagedObjectModel *)model;

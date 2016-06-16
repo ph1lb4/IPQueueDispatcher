@@ -10,6 +10,8 @@
 #import <MagicalRecord/MagicalRecord.h>
 #import "IPQueueDispatcher.h"
 #import "IPScheduler.h"
+#import "IPNetworkLayer.h"
+#import "IPBackEndLayer.h"
 #import "NSObject+IPQueueDispatcher.h"
 #pragma mark - JSON Entities
 #import "IPMessageJSONEntity.h"
@@ -39,7 +41,9 @@ NSString * const IPQueueDispatcherModelExtension = @"momd";
 @property (nonatomic, strong, readwrite) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, strong, readwrite) IPQueueDispatcher *dispatcher;
 @property (nonatomic, strong, readwrite) IPScheduler *scheduler;
-@property (nonatomic, strong) NSBundle *bundle;
+@property (nonatomic, strong, readwrite) IPNetworkLayer *networkLayer;
+@property (nonatomic, strong, readwrite) IPBackEndLayer *backEndLayer;
+@property (nonatomic) NSBundle *bundle;
 @end
 
 @implementation IPMessagesHandler
@@ -106,8 +110,20 @@ static bool isFirstAccess = YES;
     if (![self scheduler]){
         [self setScheduler:[[IPScheduler alloc] initWithInterval:[self interval]]];
     }
+    
     [self setDispatcher:[[IPQueueDispatcher alloc] initWithManagedObjectContext:[NSManagedObjectContext MR_contextWithParent:[self managedObjectContext]]
                                                              managedObjectModel:[self managedObjectModel]]];
+    
+    if (![self networkLayer]){
+        [self setNetworkLayer:[[IPNetworkLayer alloc] initWithBaseURL:[self baseURL]]];
+    }
+    
+    if (![self backEndLayer]){
+        [self setBackEndLayer:[[IPBackEndLayer alloc] init]];
+    }
+    [self.dispatcher setBackEndLayer:[self backEndLayer]];
+    
+    [self.networkLayer setDelegate:[self dispatcher]];
 }
 
 #pragma mark - Scheduler
@@ -115,6 +131,20 @@ static bool isFirstAccess = YES;
 - (void)setCustomScheduler:(IPScheduler *)scheduler
 {
     [self setScheduler:scheduler];
+}
+
+#pragma mark - Network Layer
+
+- (void)setCustomNetworkLayer:(IPNetworkLayer *)networkLayer
+{
+    [self setNetworkLayer:networkLayer];
+}
+
+#pragma mark - BackEnd Layer
+
+- (void)setCustomBackEndLayer:(IPBackEndLayer *)backEndLayer
+{
+    [self setBackEndLayer:backEndLayer];
 }
 
 #pragma mark - Messages

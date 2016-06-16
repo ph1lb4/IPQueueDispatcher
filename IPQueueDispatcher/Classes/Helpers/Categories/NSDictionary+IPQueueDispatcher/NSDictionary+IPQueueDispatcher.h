@@ -10,8 +10,8 @@
 
 @interface NSDictionary (IPQueueDispatcher)
 
-- (NSArray *)addObject:(id)object
-                forKey:(NSString *)key;
+- (NSDictionary *)addObject:(id)object
+                     forKey:(NSString *)key;
 
 - (NSDictionary *)addObjectsFromDictionary:(NSDictionary *)dictionary;
 
