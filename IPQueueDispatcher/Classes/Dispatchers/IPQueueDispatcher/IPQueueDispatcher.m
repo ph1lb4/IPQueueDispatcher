@@ -20,7 +20,6 @@ NSString * const IPQueueDispatcherName = @"com.queuedispatcher.ip";
 @property (nonatomic, strong) NSOperationQueue *queue;
 @property (nonatomic, strong) dispatch_queue_t executionQueue;
 @property (nonatomic, strong, readwrite) NSArray *errorCodes;
-
 @end
 
 @implementation IPQueueDispatcher
