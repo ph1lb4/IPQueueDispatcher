@@ -7,7 +7,7 @@
 //
 
 #import "IPAppDelegate.h"
-#import <IPQueueDispatcher/IPMessagesHandler.h>
+#import <IPQueueDispatcher/IPQueueDispatcherHeader.h>
 
 @implementation IPAppDelegate
 
