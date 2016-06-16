@@ -13,9 +13,9 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    [[IPMessagesHandler sharedInstance] setInterval:5];
-    [[IPMessagesHandler sharedInstance] initialize];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"kBaseSchedulerStart" object:nil];
+    //    [[IPMessagesHandler sharedInstance] setInterval:5];
+    //    [[IPMessagesHandler sharedInstance] initialize];
+    //    [[NSNotificationCenter defaultCenter] postNotificationName:@"kBaseSchedulerStart" object:nil];
     return YES;
 }
 

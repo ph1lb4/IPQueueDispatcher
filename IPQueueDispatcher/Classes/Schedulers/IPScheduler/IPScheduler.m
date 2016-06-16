@@ -58,6 +58,8 @@
 
 - (void)scheduledExecution:(NSTimer *)timer
 {
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"kIPSchedulerWillRun"
+                                                        object:nil];
     [self prepareMessages];
     if ([self scheduledMessages]){
         [[IPMessagesHandler sharedInstance] addMessages:[self scheduledMessages]];

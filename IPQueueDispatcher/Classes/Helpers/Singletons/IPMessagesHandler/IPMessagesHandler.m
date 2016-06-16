@@ -118,12 +118,13 @@ static bool isFirstAccess = YES;
         [self setNetworkLayer:[[IPNetworkLayer alloc] initWithBaseURL:[self baseURL]]];
     }
     
+    [self.dispatcher setNetworkLayer:[self networkLayer]];
+    [self.networkLayer setDelegate:[self dispatcher]];
+    
     if (![self backEndLayer]){
         [self setBackEndLayer:[[IPBackEndLayer alloc] init]];
     }
     [self.dispatcher setBackEndLayer:[self backEndLayer]];
-    
-    [self.networkLayer setDelegate:[self dispatcher]];
 }
 
 #pragma mark - Scheduler

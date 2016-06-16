@@ -27,7 +27,7 @@
     NSDictionary *result = self;
     if (dictionary && [dictionary count] > 0){
         NSMutableDictionary *temp = [self mutableCopy];
-        [temp addObjectsFromDictionary:dictionary];
+        [temp addEntriesFromDictionary:dictionary];
         result = [NSDictionary dictionaryWithDictionary:temp];
     }
     return result;

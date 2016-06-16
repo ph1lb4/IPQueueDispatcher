@@ -35,7 +35,7 @@
 {
     NSMutableDictionary *result = [NSMutableDictionary new];
     
-    for (NSString *key in [[[self class] JSONKeyPathsByPropertyKey] allKeys])
+    for (NSString *key in [[self JSONKeyPathsByPropertyKey] allKeys])
     {
         [self addSafeKey:key
                    value:[self valueForKey:key]

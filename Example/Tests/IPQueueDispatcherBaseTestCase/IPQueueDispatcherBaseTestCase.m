@@ -6,18 +6,17 @@
 //  Copyright © 2016 Ilias Pavlidakis. All rights reserved.
 //
 
-#import <XCTest/XCTest.h>
-#import ""
-
-@interface IPQueueDispatcherBaseTestCase : XCTestCase
-
-@end
+#import "IPQueueDispatcherBaseTestCase.h"
 
 @implementation IPQueueDispatcherBaseTestCase
 
 - (void)setUp {
     [super setUp];
-    []
+    [self setExpectationFulFillment:20];
+    [[IPMessagesHandler sharedInstance] setBaseURL:@"https://httpbin.org/"];
+    [[IPMessagesHandler sharedInstance] setInterval:5.0f];
+    [[IPMessagesHandler sharedInstance] initialize];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"kBaseSchedulerStart" object:nil];
 }
 
 - (void)tearDown {
@@ -25,16 +24,25 @@
     [super tearDown];
 }
 
-- (void)testExample {
-    // This is an example of a functional test case.
-    // Use XCTAssert and related functions to verify your tests produce the correct results.
+- (void)waitForExpectationsWithCommonTimeoutUsingHandler:(XCWaitCompletionHandler)handler {
+    [self waitForExpectationsWithTimeout:[self expectationFulFillment]
+                                 handler:handler];
 }
 
-- (void)testPerformanceExample {
-    // This is an example of a performance test case.
-    [self measureBlock:^{
-        // Put the code you want to measure the time of here.
-    }];
+- (void)testObjectsCreation {
+    XCTAssertNotNil([[IPMessagesHandler sharedInstance] scheduler],@"Scheduler cannot be nil");
+    XCTAssertNotNil([[IPMessagesHandler sharedInstance] networkLayer],@"NetworkLayer cannot be nil");
+    XCTAssertNotNil([[IPMessagesHandler sharedInstance] backEndLayer],@"BackEndLayer cannot be nil");
+    XCTAssertNotNil([[IPMessagesHandler sharedInstance] dispatcher],@"Dispatcher cannot be nil");
+    XCTAssertNotNil([[IPMessagesHandler sharedInstance] persistenStoreCoordinator],@"PersistenStoreCoordinator cannot be nil");
+    XCTAssertNotNil([[IPMessagesHandler sharedInstance] managedObjectModel],@"ManagedObjectModel cannot be nil");
+    XCTAssertNotNil([[IPMessagesHandler sharedInstance] managedObjectContext],@"ManagedObjectContext cannot be nil");
+}
+
+- (void)testDelegates {
+    XCTAssertEqual([[[IPMessagesHandler sharedInstance] dispatcher] networkLayer], [[IPMessagesHandler sharedInstance] networkLayer], @"Network layer on dispatcher is different that on MessagesHandler");
+    XCTAssertEqual([[[[IPMessagesHandler sharedInstance] dispatcher] networkLayer] delegate], [[IPMessagesHandler sharedInstance] dispatcher], @"Network layer delegate is not dispatcher");
+    XCTAssertEqual([[[IPMessagesHandler sharedInstance] dispatcher] backEndLayer], [[IPMessagesHandler sharedInstance] backEndLayer], @"BackEndLayer layer on dispatcher is different that on MessagesHandler");
 }
 
 @end
