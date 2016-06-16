@@ -46,6 +46,7 @@ NSString * const IPQueueDispatcherDelegateResultErrorKey = @"IPQueueDispatcherDe
         [self setManagedObjectContext:context];
         [self setManagedObjectModel:model];
         [self setNetworkLayer:[IPNetworkLayer new]];
+        [self removeCompletedAndInvalidMessages];
     }
     return self;
 }
@@ -130,6 +131,17 @@ NSString * const IPQueueDispatcherDelegateResultErrorKey = @"IPQueueDispatcherDe
     } @catch (NSException *exception) {
         NSLog(@"[E]Exception while executing notification action. %@",exception);
     }
+}
+
+- (void)removeCompletedAndInvalidMessages
+{
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF.endedAt != nil OR (SELF.maximumTries > %@ AND SELF.maximumTries <= SELF.timesTried) OR SELF.isInvalid == %@",@(0),@(YES)];
+    __weak typeof(self) weakSelf = self;
+    [self executeInPrivateQueue:^{
+        [weakSelf.managedObjectContext performBlock:^{
+            [IPMessageEntity MR_deleteAllMatchingPredicate:predicate inContext:[weakSelf managedObjectContext]];
+        }];
+    }];
 }
 
 #pragma mark - Execute InQueue

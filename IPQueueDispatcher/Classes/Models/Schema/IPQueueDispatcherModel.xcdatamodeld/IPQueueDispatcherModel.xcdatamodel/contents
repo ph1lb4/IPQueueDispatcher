@@ -66,13 +66,13 @@
     <fetchRequest name="IPFetchRequestNormalPriorityMessages" entity="IPMessageEntity" predicateString="priority == 1"/>
     <fetchRequest name="IPFetchRequestStickyMessages" entity="IPMessageEntity" predicateString="isSticky == 1"/>
     <elements>
-        <element name="IPMessageURLEntity" positionX="-216" positionY="-144" width="144" height="88"/>
-        <element name="IPMessageHeaderEntity" positionX="-0" positionY="-144" width="144" height="103"/>
-        <element name="IPMessageCompletionDelegateAction" positionX="358" positionY="161" width="263" height="73"/>
         <element name="IPMessageCompletionAction" positionX="358" positionY="71" width="263" height="73"/>
+        <element name="IPMessageCompletionDelegateAction" positionX="358" positionY="161" width="263" height="73"/>
         <element name="IPMessageCompletionNotificationAction" positionX="360" positionY="252" width="263" height="73"/>
         <element name="IPMessageEntity" positionX="36" positionY="81" width="128" height="343"/>
+        <element name="IPMessageHeaderEntity" positionX="-0" positionY="-144" width="144" height="103"/>
         <element name="IPMessagePropertyEntity" positionX="63" positionY="503" width="198" height="118"/>
         <element name="IPMessageSerializerEntity" positionX="-423" positionY="72" width="209" height="118"/>
+        <element name="IPMessageURLEntity" positionX="-216" positionY="-144" width="144" height="88"/>
     </elements>
 </model>
