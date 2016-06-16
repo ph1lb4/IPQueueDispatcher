@@ -14,6 +14,6 @@
 
 - (NSString *)trim;
 
-- (NSString *)MD5String;
+//- (NSString *)MD5String;
 
 @end
