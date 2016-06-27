@@ -13,6 +13,7 @@
 #import "IPNetworkLayer.h"
 #import "IPBackEndLayer.h"
 #import "NSObject+IPQueueDispatcher.h"
+#import "IPDataLayer.h"
 #pragma mark - JSON Entities
 #import "IPMessageJSONEntity.h"
 #import "IPMessageURLJSONEntity.h"
@@ -34,6 +35,7 @@ NSString * const IPQueueDispatcherBundleIdentifier = @"com.cocoapods.IPQueueDisp
 NSString * const IPQueueDispatcherStore = @"IPQueueDispatcher.sqlite";
 NSString * const IPQueueDispatcherModel = @"IPQueueDispatcherModel";
 NSString * const IPQueueDispatcherModelExtension = @"momd";
+NSString * const IPMessagesHandlerAddMessagesCompleted = @"IPMessagesHandlerAddMessagesCompleted";
 
 @interface IPMessagesHandler()
 @property (nonatomic, strong, readwrite) NSPersistentStoreCoordinator *persistenStoreCoordinator;
@@ -43,6 +45,7 @@ NSString * const IPQueueDispatcherModelExtension = @"momd";
 @property (nonatomic, strong, readwrite) IPScheduler *scheduler;
 @property (nonatomic, strong, readwrite) IPNetworkLayer *networkLayer;
 @property (nonatomic, strong, readwrite) IPBackEndLayer *backEndLayer;
+@property (nonatomic, strong, readwrite) IPDataLayer *dataLayer;
 @property (nonatomic) NSBundle *bundle;
 @end
 
@@ -125,6 +128,7 @@ static bool isFirstAccess = YES;
         [self setBackEndLayer:[[IPBackEndLayer alloc] init]];
     }
     [self.dispatcher setBackEndLayer:[self backEndLayer]];
+    [self setDataLayer:[IPDataLayer new]];
 }
 
 #pragma mark - Scheduler
@@ -203,6 +207,8 @@ static bool isFirstAccess = YES;
     } completion:^(BOOL contextDidSave, NSError * _Nullable error) {
         if (contextDidSave && !error){
             NSLog(@"[I]%@ inserted successfully.",@([messages count]));
+            [[NSNotificationCenter defaultCenter] postNotificationName:IPMessagesHandlerAddMessagesCompleted
+                                                                object:@([messages count])];
             if (containsHighPriorityMessage){
                 [weakSelf.dispatcher highPriorityMessageAdded];
             }
@@ -210,6 +216,13 @@ static bool isFirstAccess = YES;
             NSLog(@"[E]%@ error while inserting %@ messages.",error,@([messages count]));
         }
     }];
+}
+
+- (NSInteger)numberOfScheduledMessagesInStore
+{
+    return [self.dataLayer countEntities:@"IPMessageEntity"
+                              filteredBy:[NSPredicate predicateWithFormat:@"SELF.endedAt == nil AND SELF.lastTriedAt == nil"]
+                                 context:[self managedObjectContext]];
 }
 
 @end

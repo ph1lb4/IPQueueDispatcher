@@ -8,7 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-@class IPQueueDispatcher, IPScheduler, IPMessageJSONEntity, IPNetworkLayer, IPBackEndLayer;
+@class IPQueueDispatcher, IPScheduler, IPMessageJSONEntity, IPNetworkLayer, IPBackEndLayer, IPDataLayer;
+
+FOUNDATION_EXPORT NSString *const IPMessagesHandlerAddMessagesCompleted;
 
 @interface IPMessagesHandler : NSObject
 
@@ -21,6 +23,7 @@
 @property (nonatomic, strong, readonly) IPScheduler *scheduler;
 @property (nonatomic, strong, readonly) IPNetworkLayer *networkLayer;
 @property (nonatomic, strong, readonly) IPBackEndLayer *backEndLayer;
+@property (nonatomic, strong, readonly) IPDataLayer *dataLayer;
 
 + (IPMessagesHandler*)sharedInstance;
 
@@ -41,5 +44,7 @@
 #pragma mark - Messages
 
 - (void)addMessages:(NSArray<IPMessageJSONEntity *> *)messages;
+
+- (NSInteger)numberOfScheduledMessagesInStore;
 
 @end

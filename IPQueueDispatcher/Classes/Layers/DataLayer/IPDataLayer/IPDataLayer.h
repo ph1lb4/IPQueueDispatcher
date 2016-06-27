@@ -185,8 +185,25 @@
 - (NSManagedObject *_Nullable)objectWithID:(NSManagedObjectID *_Nullable)objectID
                                    context:(NSManagedObjectContext *_Nullable)context;
 
+/**
+ *  <#Description#>
+ *
+ *  @param entityName <#entityName description#>
+ *  @param predicate  <#predicate description#>
+ *  @param context    <#context description#>
+ *
+ *  @return <#return value description#>
+ */
 - (NSInteger)countEntities:(NSString *_Nonnull)entityName
-                filteredBy:(NSPredicate *_Nullable)predicate;
+                filteredBy:(NSPredicate *_Nullable)predicate
+                   context:(NSManagedObjectContext * _Nullable)context;
+
+- (NSFetchedResultsController *)controllerForEntiyName:(NSString *_Nonnull)entityName
+                                             predicate:(NSPredicate *)predicate
+                                               groupBy:(NSString *_Nullable)groupBy
+                                                sortBy:(NSString *_Nullable)sortBy
+                                             ascending:(BOOL)ascending
+                                               context:(NSManagedObjectContext *_Nullable)context;
 
 #pragma mark - UUID Handlers
 

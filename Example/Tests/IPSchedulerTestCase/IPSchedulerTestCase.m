@@ -8,9 +8,10 @@
 
 #import <XCTest/XCTest.h>
 #import "IPQueueDispatcherBaseTestCase.h"
+#import "IPMessagesHandler.h"
 
 @interface IPTestScheduler : IPScheduler
-
+@property (nonatomic) NSInteger messagesToCreatePerCycle;
 @end
 
 @implementation IPTestScheduler
@@ -23,96 +24,9 @@
     [message1 addPropertyForKey:@"testProperty" value:@"testPropertyValue"];
     [message1 setJSONtoJSONSerializers];
     [message1 addNotificationAction:@"kIPTestNotificationSchedulerActionFinished" includeRawResponse:YES];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
-    [self addScheduledMessage:message1];
+    for (NSInteger i=0 ; i < [self messagesToCreatePerCycle] ; i++){
+        [self addScheduledMessage:message1];
+    }
     [super prepareMessages];
 }
 
@@ -121,22 +35,26 @@
 @interface IPSchedulerTestCase : IPQueueDispatcherBaseTestCase
 @property (nonatomic) NSInteger executionsCount;
 @property (nonatomic) NSInteger expectedExecutionsCount;
+@property (nonatomic) NSInteger messagesToCreatePerCycle;
 @property (nonatomic) XCTestExpectation *expectation;
 @end
 
 @implementation IPSchedulerTestCase
 
 - (void)setUp {
-    [[IPMessagesHandler sharedInstance] setCustomScheduler:[[IPTestScheduler alloc] initWithInterval:5.0f]];
+    [self setMessagesToCreatePerCycle:20];
+    self.expectedExecutionsCount = 5;
+    IPTestScheduler *scheduler = [[IPTestScheduler alloc] initWithInterval:5.0f];
+    [scheduler setMessagesToCreatePerCycle:[self messagesToCreatePerCycle]];
+    [[IPMessagesHandler sharedInstance] setCustomScheduler:scheduler];
     [super setUp];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(schedulerWillRun:)
-                                                 name:@"kIPSchedulerWillRun"
-                                               object:nil];
 }
 
 - (void)tearDown {
-    // Put teardown code here. This method is called after the invocation of each test method in the class.
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [[[IPMessagesHandler sharedInstance] dataLayer] performDeleteRequest:@"IPMessageEntity"
+                                                               predicate:nil
+                                                                 context:[[IPMessagesHandler sharedInstance] managedObjectContext]];
     [super tearDown];
 }
 
@@ -145,7 +63,6 @@
                                              selector:@selector(schedulerWillRun:)
                                                  name:@"kIPSchedulerWillRun"
                                                object:nil];
-    self.expectedExecutionsCount = 2;
     [self setExpectationFulFillment:([[IPMessagesHandler sharedInstance] interval] * self.expectedExecutionsCount)];
     self.expectation = [self expectationWithDescription:[NSString stringWithFormat:@"Scheduler was executed %@ times in %@ seconds",
                                                          @([self expectationFulFillment]),
@@ -153,15 +70,15 @@
     [self waitForExpectationsWithCommonTimeoutUsingHandler:nil];
 }
 
-- (void)testSchedulerAddMesages
+- (void)testSchedulerAddAHundredMesages
 {
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(schedulerWillAddMessages:)
-                                                 name:@"kIPSchedulerWillRun"
+                                             selector:@selector(messagesWhereAdded:)
+                                                 name:IPMessagesHandlerAddMessagesCompleted
                                                object:nil];
-    self.expectedExecutionsCount = 200;
-    [self setExpectationFulFillment:([[IPMessagesHandler sharedInstance] interval] * self.expectedExecutionsCount * 1000)];
-    self.expectation = [self expectationWithDescription:@"Scheduler has 2 messages to be added"];
+    [self setExpectationFulFillment:([[IPMessagesHandler sharedInstance] interval] * self.expectedExecutionsCount + 5)];
+    self.expectation = [self expectationWithDescription:@"testSchedulerAddAHundredMesages was successful"];
+    self.executionsCount = 0;
     [self waitForExpectationsWithCommonTimeoutUsingHandler:nil];
 }
 
@@ -169,18 +86,22 @@
 
 - (void)schedulerWillRun:(NSNotification *)notification
 {
-    self.executionsCount += 100;
+    self.executionsCount += 1;
     if (self.executionsCount == self.expectedExecutionsCount){
         [self.expectation fulfill];
-        [[NSNotificationCenter defaultCenter] removeObserver:self];
     }
 }
 
-- (void)schedulerWillAddMessages:(NSNotification *)notification
+- (void)messagesWhereAdded:(NSNotification *)notification
 {
-    if ([[[[IPMessagesHandler sharedInstance] scheduler] performSelector:@selector(scheduledMessages)] count] == 2){
+    self.executionsCount += 1;
+    NSInteger messagesCount = [[IPMessagesHandler sharedInstance] numberOfScheduledMessagesInStore];
+    NSInteger expectedMessagesCount = self.executionsCount * self.messagesToCreatePerCycle;
+    XCTAssertTrue(messagesCount==expectedMessagesCount,@"The number of scheduled messaged in store is not consistent [Expected:%@],[Found:%@]",
+                  @(expectedMessagesCount),
+                  @(messagesCount));
+    if (self.executionsCount == self.expectedExecutionsCount){
         [self.expectation fulfill];
-        [[NSNotificationCenter defaultCenter] removeObserver:self];
     }
 }
 

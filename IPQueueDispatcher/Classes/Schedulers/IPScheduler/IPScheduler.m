@@ -63,6 +63,7 @@
     [self prepareMessages];
     if ([self scheduledMessages]){
         [[IPMessagesHandler sharedInstance] addMessages:[self scheduledMessages]];
+        [self setScheduledMessages:[NSMutableArray new]];
     }
 }
 

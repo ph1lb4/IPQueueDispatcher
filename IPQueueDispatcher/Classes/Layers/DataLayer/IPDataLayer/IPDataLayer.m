@@ -8,6 +8,7 @@
 
 #import "IPDataLayer.h"
 #import <MagicalRecord/MagicalRecord.h>
+#import <MagicalRecord/NSManagedObject+MagicalFinders.h>
 
 @implementation IPDataLayer
 
@@ -150,13 +151,15 @@
                      context:(NSManagedObjectContext *)context
 {
     __block BOOL result = NO;
-    [context performBlockAndWait:^{
+    [context MR_saveWithBlock:^(NSManagedObjectContext * _Nonnull localContext) {
         if (predicate) {
             result = [NSClassFromString(entityName) MR_deleteAllMatchingPredicate:predicate
                                                                         inContext:context];
         } else {
             result = [NSClassFromString(entityName) MR_truncateAllInContext:context];
         }
+    } completion:^(BOOL contextDidSave, NSError * _Nullable error) {
+        NSLog(@"[I]Entities deletion completed");
     }];
     return result;
 }
@@ -230,14 +233,35 @@
 
 - (NSInteger)countEntities:(NSString *_Nonnull)entityName
                 filteredBy:(NSPredicate *_Nullable)predicate
+                   context:(NSManagedObjectContext *)context
 {
     NSNumber *result = nil;
     if (predicate){
-        result = [NSClassFromString(entityName) MR_numberOfEntitiesWithPredicate:predicate];
+        result = [NSClassFromString(entityName) MR_numberOfEntitiesWithPredicate:predicate
+                                                                       inContext:context];
     } else {
-        result = [NSClassFromString(entityName) MR_numberOfEntities];
+        result = [NSClassFromString(entityName) MR_numberOfEntitiesWithContext:context];
     }
     return [result integerValue];
+}
+
+- (NSFetchedResultsController *)controllerForEntiyName:(NSString *_Nonnull)entityName
+                                             predicate:(NSPredicate *)predicate
+                                               groupBy:(NSString *_Nullable)groupBy
+                                                sortBy:(NSString *_Nullable)sortBy
+                                             ascending:(BOOL)ascending
+                                               context:(NSManagedObjectContext *_Nullable)context
+{
+    Class class = NSClassFromString(entityName);
+    if ([class instancesRespondToSelector:@selector(MR_fetchAllGroupedBy:withPredicate:sortedBy:ascending:inContext:)]){
+        return [class MR_fetchAllGroupedBy:groupBy
+                             withPredicate:predicate
+                                  sortedBy:sortBy
+                                 ascending:ascending
+                                 inContext:context?:[self defaultContext]];
+    } else {
+        return nil;
+    }
 }
 
 #pragma mark - UUID Handlers;
