@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
     s.name             = 'IPQueueDispatcher'
-    s.version          = '0.1.2'
+    s.version          = '0.1.3'
     s.summary          = 'Queue Dispatcher'
     s.description      = "A Queue dispatcher"
     s.homepage         = 'https://github.com/ipavlidakis/IPQueueDispatcher'
