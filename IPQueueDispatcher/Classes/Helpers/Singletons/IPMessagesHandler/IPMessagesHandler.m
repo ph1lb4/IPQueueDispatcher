@@ -6,14 +6,14 @@
 //
 //
 
+#import "IPBackEndLayer.h"
+#import "IPDataLayer.h"
 #import "IPMessagesHandler.h"
-#import <MagicalRecord/MagicalRecord.h>
+#import "IPNetworkLayer.h"
 #import "IPQueueDispatcher.h"
 #import "IPScheduler.h"
-#import "IPNetworkLayer.h"
-#import "IPBackEndLayer.h"
 #import "NSObject+IPQueueDispatcher.h"
-#import "IPDataLayer.h"
+#import <MagicalRecord/MagicalRecord.h>
 #pragma mark - JSON Entities
 #import "IPMessageJSONEntity.h"
 #import "IPMessageURLJSONEntity.h"

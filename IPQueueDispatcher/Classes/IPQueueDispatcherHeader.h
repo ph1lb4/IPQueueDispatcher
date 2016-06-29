@@ -6,6 +6,7 @@
 //
 //
 
+#import "IPBackEndLayer.h"
 #import "IPDataLayer.h"
 #import "IPMessageCompletionActionJSONEntity.h"
 #import "IPMessageCompletionDelegateActionJSONEntity.h"
@@ -14,8 +15,8 @@
 #import "IPMessageJSONEntity.h"
 #import "IPMessagePropertyJSONEntity.h"
 #import "IPMessageSerializerJSONEntity.h"
-#import "IPMessageURLJSONEntity.h"
 #import "IPMessagesHandler.h"
+#import "IPMessageURLJSONEntity.h"
 #import "IPNetworkLayer.h"
 #import "IPNetworkLayerProtocol.h"
 #import "IPQueueDispatcher-umbrella.h"
@@ -27,4 +28,3 @@
 #import "NSDictionary+IPQueueDispatcher.h"
 #import "NSObject+IPQueueDispatcher.h"
 #import "NSString+IPQueueDispatcher.h"
-#import "IPBackEndLayer.h"
