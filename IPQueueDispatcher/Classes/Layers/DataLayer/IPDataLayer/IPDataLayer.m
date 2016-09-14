@@ -252,14 +252,16 @@
                                              ascending:(BOOL)ascending
                                                context:(NSManagedObjectContext *_Nullable)context
 {
-    Class class = NSClassFromString(entityName);
-    if ([class instancesRespondToSelector:@selector(MR_fetchAllGroupedBy:withPredicate:sortedBy:ascending:inContext:)]){
-        return [class MR_fetchAllGroupedBy:groupBy
-                             withPredicate:predicate
-                                  sortedBy:sortBy
-                                 ascending:ascending
-                                 inContext:context?:[self defaultContext]];
-    } else {
+    Class classEntity = NSClassFromString(entityName);
+    SEL selector = @selector(MR_fetchAllGroupedBy:withPredicate:sortedBy:ascending:inContext:);
+    @try {
+        return [classEntity MR_fetchAllGroupedBy:groupBy
+                                   withPredicate:predicate
+                                        sortedBy:sortBy
+                                       ascending:ascending
+                                       inContext:context?:[self defaultContext]];
+    } @catch (NSException *exception) {
+        NSLog(@"[E]IPDatalayer: %@",exception);
         return nil;
     }
 }
