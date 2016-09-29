@@ -81,7 +81,7 @@
 - (void)resume
 {
     if ([[self.manager operationQueue] operationCount]){
-        [[[[self.manager operationQueue] operations] firstObject] resume];
+//        [[[[self.manager operationQueue] operations] firstObject] resume];
     }
 }
 
