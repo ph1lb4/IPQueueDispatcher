@@ -68,7 +68,7 @@
 
 - (void)stopAll
 {
-    [self.manager invalidateSessionCancelingTasks:YES];
+    [self.manager invalidateSessionCancelingTasks:YES resetSession:YES];
 }
 
 - (void)pauseAll
@@ -113,19 +113,23 @@
     switch ([[message protocol] integerValue]) {
         case IPMessageProtocolPOST:[self.manager POST:[message.url path]
                                            parameters:[message propertiesAsDictionary]
+                                              headers:nil
                                              progress:nil
                                               success:successBlock
                                               failure:failureBlock];break;
         case IPMessageProtocolPUT:[self.manager PUT:[message.url path]
                                          parameters:[message propertiesAsDictionary]
+                                            headers:nil
                                             success:successBlock
                                             failure:failureBlock];break;
         case IPMessageProtocolDELETE:[self.manager DELETE:[message.url path]
                                                parameters:[message propertiesAsDictionary]
+                                                  headers:nil
                                                   success:successBlock
                                                   failure:failureBlock];break;
         default:[self.manager GET:[message.url path]
                        parameters:[message propertiesAsDictionary]
+                          headers:nil
                          progress:nil
                           success:successBlock
                           failure:failureBlock];break;
